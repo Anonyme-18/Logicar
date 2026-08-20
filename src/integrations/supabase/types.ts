@@ -14,16 +14,386 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      artisan_profiles: {
+        Row: {
+          address: string | null
+          business_name: string
+          city: string | null
+          country: string | null
+          created_at: string
+          currency: string
+          email: string | null
+          full_name: string
+          id: string
+          logo_url: string | null
+          phone: string | null
+          quote_terms: string | null
+          tax_identifier: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          business_name?: string
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          currency?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          logo_url?: string | null
+          phone?: string | null
+          quote_terms?: string | null
+          tax_identifier?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          business_name?: string
+          city?: string | null
+          country?: string | null
+          created_at?: string
+          currency?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          logo_url?: string | null
+          phone?: string | null
+          quote_terms?: string | null
+          tax_identifier?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      clients: {
+        Row: {
+          address: string | null
+          archived_at: string | null
+          city: string | null
+          company_name: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          archived_at?: string | null
+          city?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          archived_at?: string | null
+          city?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      document_counters: {
+        Row: {
+          kind: string
+          seq: number
+          user_id: string
+          year: number
+        }
+        Insert: {
+          kind: string
+          seq?: number
+          user_id: string
+          year: number
+        }
+        Update: {
+          kind?: string
+          seq?: number
+          user_id?: string
+          year?: number
+        }
+        Relationships: []
+      }
+      document_events: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          event_type: string
+          id: string
+          metadata: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          event_type: string
+          id?: string
+          metadata?: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          event_type?: string
+          id?: string
+          metadata?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      invoice_items: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          invoice_id: string
+          line_total: number
+          position: number
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          invoice_id: string
+          line_total: number
+          position?: number
+          quantity: number
+          unit_price: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          invoice_id?: string
+          line_total?: number
+          position?: number
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoices: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          invoice_number: string
+          issue_date: string
+          locked: boolean
+          notes: string | null
+          paid_at: string | null
+          quote_id: string | null
+          quote_number_ref: string | null
+          status: Database["public"]["Enums"]["invoice_status"]
+          subtotal: number
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          invoice_number: string
+          issue_date?: string
+          locked?: boolean
+          notes?: string | null
+          paid_at?: string | null
+          quote_id?: string | null
+          quote_number_ref?: string | null
+          status?: Database["public"]["Enums"]["invoice_status"]
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          invoice_number?: string
+          issue_date?: string
+          locked?: boolean
+          notes?: string | null
+          paid_at?: string | null
+          quote_id?: string | null
+          quote_number_ref?: string | null
+          status?: Database["public"]["Enums"]["invoice_status"]
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: true
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quote_items: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          line_total: number
+          position: number
+          quantity: number
+          quote_id: string
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          line_total: number
+          position?: number
+          quantity: number
+          quote_id: string
+          unit_price: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          line_total?: number
+          position?: number
+          quantity?: number
+          quote_id?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_items_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quotes: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          issue_date: string
+          notes: string | null
+          public_token: string
+          quote_number: string
+          shared_at: string | null
+          status: Database["public"]["Enums"]["quote_status"]
+          subtotal: number
+          total: number
+          updated_at: string
+          user_id: string
+          valid_until: string | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          issue_date?: string
+          notes?: string | null
+          public_token?: string
+          quote_number: string
+          shared_at?: string | null
+          status?: Database["public"]["Enums"]["quote_status"]
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id: string
+          valid_until?: string | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          issue_date?: string
+          notes?: string | null
+          public_token?: string
+          quote_number?: string
+          shared_at?: string | null
+          status?: Database["public"]["Enums"]["quote_status"]
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id?: string
+          valid_until?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      convert_quote_to_invoice: { Args: { _quote_id: string }; Returns: string }
+      get_public_quote: { Args: { _token: string }; Returns: Json }
+      next_document_number: {
+        Args: { _kind: string; _user_id: string }
+        Returns: string
+      }
     }
     Enums: {
-      [_ in never]: never
+      invoice_status:
+        | "UNPAID"
+        | "PAID"
+        | "PARTIALLY_PAID"
+        | "OVERDUE"
+        | "CANCELLED"
+      quote_status: "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED" | "CONVERTED"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +520,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      invoice_status: [
+        "UNPAID",
+        "PAID",
+        "PARTIALLY_PAID",
+        "OVERDUE",
+        "CANCELLED",
+      ],
+      quote_status: ["DRAFT", "SENT", "ACCEPTED", "REJECTED", "CONVERTED"],
+    },
   },
 } as const
