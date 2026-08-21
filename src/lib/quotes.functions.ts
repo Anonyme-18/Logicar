@@ -239,13 +239,9 @@ export const setQuoteStatus = createServerFn({ method: "POST" })
     if (isQuoteLocked(existing.status) && data.status !== "ACCEPTED") {
       throw new Error("Ce devis est verrouillé.");
     }
-    const { error } = await supabase
-      .from("quotes")
-      .update({
-        status: data.status,
-        shared_at: data.status === "SENT" ? new Date().toISOString() : undefined,
-      })
-      .eq("id", data.id);
+    const patch: { status: typeof data.status; shared_at?: string } = { status: data.status };
+    if (data.status === "SENT") patch.shared_at = new Date().toISOString();
+    const { error } = await supabase.from("quotes").update(patch).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { status: data.status };
   });
