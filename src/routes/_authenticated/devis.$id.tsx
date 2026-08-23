@@ -211,7 +211,7 @@ function QuoteEditorPage() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button onClick={handleSave} disabled={locked || saving}>
+          <Button onClick={handleSave} disabled={locked || saving || !clientId}>
             {saving ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
             Enregistrer
           </Button>
