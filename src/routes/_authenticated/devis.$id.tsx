@@ -144,8 +144,13 @@ function QuoteEditorPage() {
   const pdfUrl = preview ? `data:application/pdf;base64,${preview.pdf}#toolbar=0&navpanes=0` : null;
 
   async function handleSave() {
+    if (!clientId) {
+      toast.error("Sélectionnez un client avant d'enregistrer");
+      return;
+    }
     setSaving(true);
     try {
+
       const result = await persistQuote({
         data: {
           id: quoteId,
