@@ -124,6 +124,12 @@
   --chart-4: oklch(0.68 0.15 232);
   --chart-5: oklch(0.6 0.1 300);
 
+  --brand: oklch(0.68 0.19 40);
+  --brand-foreground: oklch(0.99 0.005 60);
+  --brand-soft: oklch(0.95 0.04 50);
+  --ink: oklch(0.19 0.015 60);
+  --ink-foreground: oklch(0.98 0.004 60);
+
   --sidebar: oklch(1 0 0 / 0.55);
   --sidebar-foreground: oklch(0.28 0.025 262);
   --sidebar-primary: oklch(0.53 0.185 262);
