@@ -102,32 +102,35 @@ function DashboardPage() {
   return (
     <AppShell>
       {/* En-tête */}
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4 sm:flex sm:flex-wrap sm:justify-between">
+      <header className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
         <div className="min-w-0">
-          <h1 className="truncate font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h1 className="truncate font-display text-2xl font-semibold tracking-tight sm:text-4xl">
             Bonjour 👋
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Suivez vos devis, vos encaissements et vos impayés en un coup d'œil.
           </p>
         </div>
-        <div className="flex shrink-0 gap-1 rounded-full bg-card p-1 shadow-glass">
-          {PERIODS.map((p) => (
-            <button
-              key={p.key}
-              onClick={() => setPeriod(p.key)}
-              className={cn(
-                "rounded-full px-3 py-1.5 text-xs font-medium transition-colors sm:text-sm",
-                period === p.key
-                  ? "bg-ink text-ink-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {p.label}
-            </button>
-          ))}
+        <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:overflow-visible sm:px-0">
+          <div className="inline-flex shrink-0 gap-1 rounded-full bg-card p-1 shadow-glass">
+            {PERIODS.map((p) => (
+              <button
+                key={p.key}
+                onClick={() => setPeriod(p.key)}
+                className={cn(
+                  "whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                  period === p.key
+                    ? "bg-ink text-ink-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
+
 
       <div className="mt-6 grid gap-4 lg:grid-cols-12">
         {/* Carte solde */}
