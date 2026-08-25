@@ -184,7 +184,7 @@ function DashboardPage() {
         </section>
 
         {/* Mini KPI */}
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-4">
+        <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-4">
           <MiniKpi
             featured
             icon={<Wallet className="size-4" />}
