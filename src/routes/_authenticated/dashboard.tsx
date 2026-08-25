@@ -144,7 +144,7 @@ function DashboardPage() {
           {isPending ? (
             <Skeleton className="mt-3 h-10 w-48" />
           ) : (
-            <p className="mt-2 font-display text-[34px] font-semibold leading-tight tabular">
+            <p className="mt-2 font-display text-[26px] font-semibold leading-tight tabular sm:text-[34px]">
               {formatMoney(data!.kpi.billed, currency)}
             </p>
           )}

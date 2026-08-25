@@ -192,9 +192,9 @@ function QuoteEditorPage() {
 
   return (
     <AppShell>
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight">
+          <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
             {quoteId ? (editor?.quote?.quote_number ?? "Devis") : "Nouveau devis"}
           </h1>
           <p className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
@@ -429,10 +429,10 @@ function QuoteEditorPage() {
               <iframe
                 title="Aperçu du devis"
                 src={pdfUrl}
-                className="h-[70vh] w-full rounded-xl border border-border/60 bg-white"
+                className="h-[55vh] w-full rounded-xl border border-border/60 bg-white sm:h-[70vh]"
               />
             ) : (
-              <Skeleton className="h-[70vh] w-full rounded-xl" />
+              <Skeleton className="h-[55vh] w-full rounded-xl sm:h-[70vh]" />
             )}
           </div>
         </div>
