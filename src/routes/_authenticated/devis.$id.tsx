@@ -241,7 +241,7 @@ function QuoteEditorPage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="space-y-6">
-          <section className="rounded-2xl border border-glass-border surface-glass p-6 shadow-glass">
+          <section className="rounded-2xl border border-glass-border surface-glass p-4 shadow-glass sm:p-6">
             <h2 className="font-display text-lg font-semibold">Informations</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
@@ -296,7 +296,7 @@ function QuoteEditorPage() {
             </div>
           </section>
 
-          <section className="rounded-2xl border border-glass-border surface-glass p-6 shadow-glass">
+          <section className="rounded-2xl border border-glass-border surface-glass p-4 shadow-glass sm:p-6">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-semibold">Prestations</h2>
               <Button
@@ -390,7 +390,7 @@ function QuoteEditorPage() {
             </div>
           </section>
 
-          <section className="rounded-2xl border border-glass-border surface-glass p-6 shadow-glass">
+          <section className="rounded-2xl border border-glass-border surface-glass p-4 shadow-glass sm:p-6">
             <h2 className="font-display text-lg font-semibold">Devis récents</h2>
             <ul className="mt-3 divide-y divide-border/60 text-sm">
               {(quoteList ?? []).slice(0, 8).map((q) => (
