@@ -134,7 +134,7 @@ function DashboardPage() {
 
       <div className="mt-6 grid gap-4 lg:grid-cols-12">
         {/* Carte solde */}
-        <section className="rounded-3xl bg-card p-6 shadow-glass lg:col-span-4">
+        <section className="rounded-3xl bg-card p-5 shadow-glass sm:p-6 lg:col-span-4">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>Total facturé</span>
             <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
@@ -144,7 +144,7 @@ function DashboardPage() {
           {isPending ? (
             <Skeleton className="mt-3 h-10 w-48" />
           ) : (
-            <p className="mt-2 font-display text-[34px] font-semibold leading-tight tabular">
+            <p className="mt-2 font-display text-[26px] font-semibold leading-tight tabular sm:text-[34px]">
               {formatMoney(data!.kpi.billed, currency)}
             </p>
           )}
@@ -184,7 +184,7 @@ function DashboardPage() {
         </section>
 
         {/* Mini KPI */}
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-4">
+        <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:col-span-4">
           <MiniKpi
             featured
             icon={<Wallet className="size-4" />}
@@ -213,7 +213,7 @@ function DashboardPage() {
         </section>
 
         {/* Graphique */}
-        <section className="rounded-3xl bg-card p-6 shadow-glass lg:col-span-4">
+        <section className="rounded-3xl bg-card p-5 shadow-glass sm:p-6 lg:col-span-4">
           <h2 className="font-display text-base font-semibold">Revenus</h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
             Facturé et encaissé sur la période
@@ -281,7 +281,7 @@ function DashboardPage() {
         </section>
 
         {/* Activité récente */}
-        <section className="rounded-3xl bg-card p-6 shadow-glass lg:col-span-12">
+        <section className="rounded-3xl bg-card p-5 shadow-glass sm:p-6 lg:col-span-12">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:flex sm:justify-between">
             <h2 className="min-w-0 truncate font-display text-base font-semibold">
               Devis récents
@@ -297,7 +297,59 @@ function DashboardPage() {
             </div>
           </div>
 
-          <div className="mt-4 overflow-x-auto">
+          {/* Liste mobile */}
+          <ul className="mt-4 space-y-2 sm:hidden">
+            {rows.length === 0 ? (
+              <li className="py-8 text-center text-sm text-muted-foreground">
+                Aucun devis pour l'instant.
+              </li>
+            ) : (
+              rows.map((q) => {
+                const client = (q.clients as { name?: string } | null)?.name ?? "Client";
+                const status = QUOTE_STATUS[q.status as QuoteStatus];
+                return (
+                  <li key={q.id}>
+                    <Link
+                      to="/devis/$id"
+                      params={{ id: q.id }}
+                      className="flex items-center gap-3 rounded-2xl bg-muted/50 p-3"
+                    >
+                      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-brand-soft text-xs font-semibold text-foreground">
+                        {initials(client)}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-sm font-medium">{client}</span>
+                        <span className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                          <i
+                            className={cn(
+                              "size-1.5 rounded-full",
+                              status?.tone === "success" && "bg-success",
+                              status?.tone === "danger" && "bg-destructive",
+                              status?.tone === "info" && "bg-info",
+                              status?.tone === "primary" && "bg-brand",
+                              (!status || status.tone === "neutral") && "bg-muted-foreground",
+                            )}
+                          />
+                          {status?.label ?? q.status} · {q.quote_number}
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-right">
+                        <span className="block text-sm font-semibold tabular">
+                          {formatMoney(Number(q.total), currency)}
+                        </span>
+                        <span className="text-[11px] text-muted-foreground tabular">
+                          {formatDateShort(q.issue_date)}
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })
+            )}
+          </ul>
+
+          <div className="mt-4 hidden overflow-x-auto sm:block">
+
             <table className="w-full min-w-[620px] border-separate border-spacing-y-1 text-sm">
               <thead>
                 <tr className="text-left text-xs text-muted-foreground">
@@ -384,7 +436,7 @@ function MiniKpi({
   return (
     <div
       className={cn(
-        "lift rounded-3xl p-5 shadow-glass",
+        "lift rounded-3xl p-4 shadow-glass sm:p-5",
         featured ? "bg-brand text-brand-foreground" : "bg-card",
       )}
     >
