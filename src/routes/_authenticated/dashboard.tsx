@@ -134,7 +134,7 @@ function DashboardPage() {
 
       <div className="mt-6 grid gap-4 lg:grid-cols-12">
         {/* Carte solde */}
-        <section className="rounded-3xl bg-card p-6 shadow-glass lg:col-span-4">
+        <section className="rounded-3xl bg-card p-5 shadow-glass sm:p-6 lg:col-span-4">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>Total facturé</span>
             <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
@@ -213,7 +213,7 @@ function DashboardPage() {
         </section>
 
         {/* Graphique */}
-        <section className="rounded-3xl bg-card p-6 shadow-glass lg:col-span-4">
+        <section className="rounded-3xl bg-card p-5 shadow-glass sm:p-6 lg:col-span-4">
           <h2 className="font-display text-base font-semibold">Revenus</h2>
           <p className="mt-0.5 text-xs text-muted-foreground">
             Facturé et encaissé sur la période
@@ -281,7 +281,7 @@ function DashboardPage() {
         </section>
 
         {/* Activité récente */}
-        <section className="rounded-3xl bg-card p-6 shadow-glass lg:col-span-12">
+        <section className="rounded-3xl bg-card p-5 shadow-glass sm:p-6 lg:col-span-12">
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:flex sm:justify-between">
             <h2 className="min-w-0 truncate font-display text-base font-semibold">
               Devis récents
