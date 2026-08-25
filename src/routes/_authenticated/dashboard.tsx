@@ -436,7 +436,7 @@ function MiniKpi({
   return (
     <div
       className={cn(
-        "lift rounded-3xl p-5 shadow-glass",
+        "lift rounded-3xl p-4 shadow-glass sm:p-5",
         featured ? "bg-brand text-brand-foreground" : "bg-card",
       )}
     >
