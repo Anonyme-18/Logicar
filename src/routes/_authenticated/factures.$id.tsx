@@ -8,7 +8,7 @@ import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getInvoice, setInvoiceStatus } from "@/lib/invoices.functions";
-import { StatusPill } from "./factures";
+import { StatusPill } from "@/components/StatusPill";
 import { formatMoney, formatQuantity } from "@/lib/money";
 import { formatDateLong } from "@/lib/format";
 
