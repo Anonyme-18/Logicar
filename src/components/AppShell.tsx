@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, FileText, LogOut } from "lucide-react";
+import { LayoutDashboard, FileText, ReceiptText, LogOut } from "lucide-react";
 import type { ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <FileText className="size-4" /> Nouveau devis
             </Link>
+            <Link
+              to="/factures"
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground [&.active]:bg-accent [&.active]:text-accent-foreground"
+            >
+              <ReceiptText className="size-4" /> Factures
+            </Link>
           </nav>
           <div className="ml-auto shrink-0">
             <Button variant="ghost" size="sm" onClick={signOut} aria-label="Déconnexion">
@@ -50,7 +56,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Navigation mobile */}
       <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border/60 surface-glass backdrop-blur-xl sm:hidden">
-        <div className="mx-auto grid max-w-md grid-cols-2 px-2 pb-[env(safe-area-inset-bottom)]">
+        <div className="mx-auto grid max-w-md grid-cols-3 px-2 pb-[env(safe-area-inset-bottom)]">
           <Link
             to="/dashboard"
             className="flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium text-muted-foreground transition-colors [&.active]:text-foreground"
@@ -65,6 +71,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <FileText className="size-5" />
             Nouveau devis
+          </Link>
+          <Link
+            to="/factures"
+            className="flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium text-muted-foreground transition-colors [&.active]:text-foreground"
+          >
+            <ReceiptText className="size-5" />
+            Factures
           </Link>
         </div>
       </nav>
