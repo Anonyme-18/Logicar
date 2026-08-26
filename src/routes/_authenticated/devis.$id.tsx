@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus, Trash2, Save, Send, Lock, Loader2, FileText } from "lucide-react";
+import { Plus, Trash2, Save, Send, Lock, Loader2, FileText, ReceiptText } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ import {
   setQuoteStatus,
   listQuotes,
 } from "@/lib/quotes.functions";
+import { convertQuote } from "@/lib/invoices.functions";
 import { formatMoney } from "@/lib/money";
 import { toISODate } from "@/lib/format";
 import { QUOTE_STATUS, type QuoteStatus } from "@/lib/status";
@@ -70,6 +71,8 @@ function QuoteEditorPage() {
   const fetchList = useServerFn(listQuotes);
   const persistQuote = useServerFn(saveQuote);
   const changeStatus = useServerFn(setQuoteStatus);
+  const toInvoice = useServerFn(convertQuote);
+  const [converting, setConverting] = useState(false);
 
   const { data: editor, isPending } = useQuery({
     queryKey: ["quote-editor", quoteId ?? "nouveau"],
@@ -188,6 +191,22 @@ function QuoteEditorPage() {
     }
   }
 
+  async function handleConvert() {
+    if (!quoteId) return;
+    setConverting(true);
+    try {
+      const { id: invoiceId } = await toInvoice({ data: { quote_id: quoteId } });
+      await queryClient.invalidateQueries({ queryKey: ["quotes"] });
+      await queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      toast.success("Facture créée");
+      navigate({ to: "/factures/$id", params: { id: invoiceId } });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Conversion impossible");
+    } finally {
+      setConverting(false);
+    }
+  }
+
   const serverTotal = preview?.totals.total ?? 0;
 
   return (
@@ -229,6 +248,16 @@ function QuoteEditorPage() {
                 Refusé
               </Button>
             </>
+          ) : null}
+          {quoteId && status === "ACCEPTED" ? (
+            <Button onClick={handleConvert} disabled={converting}>
+              {converting ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <ReceiptText className="size-4" />
+              )}
+              Transformer en facture
+            </Button>
           ) : null}
         </div>
       </div>
