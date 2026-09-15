@@ -75,7 +75,15 @@ function wrap(text: string, font: PDFFont, size: number, maxWidth: number): stri
   return lines.length ? lines : [""];
 }
 
-function drawRight(page: PDFPage, text: string, x: number, y: number, font: PDFFont, size: number, color = INK) {
+function drawRight(
+  page: PDFPage,
+  text: string,
+  x: number,
+  y: number,
+  font: PDFFont,
+  size: number,
+  color = INK,
+) {
   const t = safe(text);
   page.drawText(t, { x: x - font.widthOfTextAtSize(t, size), y, size, font, color });
 }
@@ -123,7 +131,15 @@ export async function buildDocumentPdf(payload: PdfPayload): Promise<Uint8Array>
   drawRight(page, `Date : ${formatDateLong(payload.issue_date)}`, W - M, ry, regular, 9, SOFT);
   ry -= 12;
   if (payload.valid_until) {
-    drawRight(page, `Valable jusqu'au ${formatDateLong(payload.valid_until)}`, W - M, ry, regular, 9, SOFT);
+    drawRight(
+      page,
+      `Valable jusqu'au ${formatDateLong(payload.valid_until)}`,
+      W - M,
+      ry,
+      regular,
+      9,
+      SOFT,
+    );
     ry -= 12;
   }
   if (payload.quoteRef) {
@@ -158,7 +174,13 @@ export async function buildDocumentPdf(payload: PdfPayload): Promise<Uint8Array>
   const colTotal = W - M;
 
   const header = () => {
-    page.drawRectangle({ x: M - 8, y: y - 6, width: W - 2 * M + 16, height: 22, color: rgb(0.96, 0.97, 0.99) });
+    page.drawRectangle({
+      x: M - 8,
+      y: y - 6,
+      width: W - 2 * M + 16,
+      height: 22,
+      color: rgb(0.96, 0.97, 0.99),
+    });
     page.drawText("DESIGNATION", { x: colDesc, y, size: 8, font: bold, color: SOFT });
     drawRight(page, "QTE", colQty + 30, y, bold, 8, SOFT);
     drawRight(page, "PRIX UNITAIRE", colUnit + 60, y, bold, 8, SOFT);

@@ -196,7 +196,6 @@ Exemple de variables :
 
 DATABASE_URL=
 
-
 L'application doit fonctionner avec la variable d'environnement fournie.
 
 ORM
@@ -1346,11 +1345,9 @@ BEGIN TRANSACTION
 
 COMMIT
 
-
 En cas d'erreur :
 
 ROLLBACK
-
 
 42. CAS DE DOUBLE CLIC
 
@@ -1403,26 +1400,25 @@ Ne pas injecter de données fictives en production.
 Prévoir au minimum :
 
 /
- /login
- /register
+/login
+/register
 
- /dashboard
+/dashboard
 
- /clients
- /clients/new
- /clients/[id]
+/clients
+/clients/new
+/clients/[id]
 
- /quotes
- /quotes/new
- /quotes/[id]
+/quotes
+/quotes/new
+/quotes/[id]
 
- /invoices
- /invoices/[id]
+/invoices
+/invoices/[id]
 
- /settings
+/settings
 
- /quote/[public_token]
-
+/quote/[public_token]
 
 Les routes privées doivent être protégées.
 
@@ -1590,39 +1586,38 @@ Ne pas implémenter de signature électronique complexe dans le MVP.
 Le parcours principal attendu est :
 
 INSCRIPTION
-    ↓
+↓
 DASHBOARD
-    ↓
+↓
 CRÉER CLIENT
-    ↓
+↓
 NOUVEAU DEVIS
-    ↓
+↓
 AJOUTER PLUSIEURS LIGNES
-    ↓
+↓
 TOTAL AUTOMATIQUE
-    ↓
+↓
 ENREGISTRER
-    ↓
+↓
 GÉNÉRER PDF
-    ↓
+↓
 COPIER LIEN PUBLIC
-    ↓
+↓
 ENVOYER AU CLIENT VIA WHATSAPP
-    ↓
+↓
 CLIENT CONSULTE LE DEVIS
-    ↓
+↓
 ARTISAN MARQUE LE DEVIS COMME ACCEPTÉ
-    ↓
+↓
 TRANSFORMER EN FACTURE
-    ↓
+↓
 FACTURE VERROUILLÉE
-    ↓
+↓
 CLIENT PAIE
-    ↓
+↓
 ARTISAN MARQUE LA FACTURE COMME PAYÉE
-    ↓
+↓
 DASHBOARD MIS À JOUR
-
 
 54. WHATSAPP
 
@@ -1749,7 +1744,6 @@ avec les variables nécessaires, par exemple :
 
 DATABASE_URL=
 AUTH_SECRET=
-
 
 Ne jamais committer le vrai .env.
 
@@ -2053,7 +2047,6 @@ Enregistrer
 ↓
 Partager
 
-
 Pas de wizard inutile en 8 étapes.
 
 2.2 Hiérarchie visuelle extrêmement forte
@@ -2191,16 +2184,15 @@ radius généreux.
 Exemple conceptuel :
 
 ┌─────────────────────────────────────────┐
-│                                         │
-│       GLASS CARD                        │
-│                                         │
-│   background: rgba(...)                 │
-│   backdrop-filter: blur(...)            │
-│   border: 1px solid rgba(...)           │
-│   shadow: soft                          │
-│                                         │
+│ │
+│ GLASS CARD │
+│ │
+│ background: rgba(...) │
+│ backdrop-filter: blur(...) │
+│ border: 1px solid rgba(...) │
+│ shadow: soft │
+│ │
 └─────────────────────────────────────────┘
-
 
 Niveau 3 — Floating elements
 
@@ -2288,7 +2280,6 @@ MONTANT ENCAISSÉ
 
 125 000 FCFA
 
-
 Le montant doit être immédiatement visible sans prendre toute la page.
 
 7. DASHBOARD — EXPÉRIENCE PREMIUM
@@ -2330,7 +2321,6 @@ Exemple :
         +18,4% vs mois dernier
 
 ────────────────────────────────────────
-
 
 Le montant doit avoir une animation subtile lors du chargement.
 
@@ -2388,7 +2378,7 @@ Le graphique doit être agréable à regarder même avec peu de données.
 
 Créer un bouton principal très visible :
 
-+ Nouveau devis
+- Nouveau devis
 
 Il doit être accessible depuis :
 
@@ -2416,8 +2406,7 @@ combien ont été transformés.
 
 Créer une navigation/filter élégante :
 
-Tous     Brouillons     Envoyés     Acceptés     Convertis
-
+Tous Brouillons Envoyés Acceptés Convertis
 
 avec animation fluide lors du changement.
 
@@ -2438,7 +2427,6 @@ Installation électrique
 
 Accepté
 
-
 Les actions apparaissent au hover.
 
 Sur mobile, transformer les lignes en cards.
@@ -2452,18 +2440,17 @@ Il doit être pensé comme un workspace de création.
 Layout desktop :
 
 ┌──────────────────────────────┬──────────────────────────┐
-│                              │                          │
-│     FORMULAIRE               │      APERÇU             │
-│                              │                          │
-│     Client                   │      DEVIS               │
-│                              │                          │
-│     Prestations              │      ...                 │
-│                              │                          │
-│     + Ajouter une ligne      │                          │
-│                              │                          │
-│                              │                          │
+│ │ │
+│ FORMULAIRE │ APERÇU │
+│ │ │
+│ Client │ DEVIS │
+│ │ │
+│ Prestations │ ... │
+│ │ │
+│ + Ajouter une ligne │ │
+│ │ │
+│ │ │
 └──────────────────────────────┴──────────────────────────┘
-
 
 L'utilisateur doit voir immédiatement ce que donnera son devis.
 
@@ -2491,7 +2478,7 @@ L'ajout d'une ligne doit être extrêmement fluide.
 
 Bouton :
 
-+ Ajouter une prestation
+- Ajouter une prestation
 
 Une nouvelle ligne apparaît avec une animation courte.
 
@@ -2522,7 +2509,6 @@ Sous-total
 TOTAL
 
 105 000 FCFA
-
 
 Lorsque le montant change :
 
@@ -2564,7 +2550,6 @@ Votre devis est prêt à être partagé.
 
         Partager sur WhatsApp
 
-
 Après copie :
 
 le bouton devient temporairement :
@@ -2593,18 +2578,17 @@ Créer une présentation élégante :
 
 Installation électrique
 
-4 × 15 000 FCFA       60 000
+4 × 15 000 FCFA 60 000
 
 Câblage
 
-10 × 2 000 FCFA       20 000
+10 × 2 000 FCFA 20 000
 
 ────────────────────────────────
 
 TOTAL
 
 105 000 FCFA
-
 
 Utiliser le glassmorphisme avec beaucoup plus de sobriété.
 
@@ -2741,7 +2725,6 @@ Exemple :
 
           + Nouveau devis
 
-
 L'état vide doit encourager l'action.
 
 26. SUCCESS STATES
@@ -2760,7 +2743,6 @@ Facture créée
 Votre devis DEV-2026-0012
 est maintenant la facture
 FAC-2026-0007.
-
 
 Puis proposer :
 
@@ -2806,7 +2788,6 @@ PARAMÈTRES
 Profil
 Paramètres
 
-
 Le menu actif possède une surface glass/accent très subtile.
 
 La sidebar peut avoir un effet de profondeur légèrement différent du contenu principal.
@@ -2827,7 +2808,7 @@ action principale flottante.
 
 Le bouton :
 
-+ Nouveau devis
+- Nouveau devis
 
 doit rester très accessible.
 
@@ -2854,17 +2835,16 @@ Ne pas utiliser du blanc pur partout.
 Créer une hiérarchie en profondeur :
 
 BACKGROUND
-    ↓
+↓
 GLASS SURFACE
-    ↓
+↓
 CARD
-    ↓
+↓
 CONTENT
-    ↓
+↓
 FLOATING ACTION
-    ↓
+↓
 MODAL
-
 
 Chaque niveau doit avoir une différence subtile de :
 
@@ -2930,7 +2910,6 @@ Exemple :
 ● Converti
 ● Payée
 ● En attente
-
 
 Les badges doivent être :
 
@@ -3126,17 +3105,14 @@ L'objectif est :
 
 "une application que les utilisateurs prennent plaisir à utiliser."
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/a4aabe75-f162-44b6-a644-2ca381ebd2e2).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
+
+Prerequisites: Node.js (v18+) and npm.
+
+```sh
+npm install
+npm run dev
+```
 
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 

@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
+import Link from "next/link";
 import { ChevronDown, ChevronRight, Menu, ShoppingCart } from "lucide-react";
 
 const LINKS = [
@@ -49,7 +51,7 @@ export function Navbar() {
           <div className="ml-auto flex items-center gap-2">
             <ShoppingCart className="hidden size-4 text-muted-foreground sm:block" />
             <Link
-              to="/auth"
+              href="/auth"
               className="press inline-flex items-center gap-2 rounded-full bg-primary py-2 pl-4 pr-2 text-[13px] font-medium text-primary-foreground"
             >
               <span className="hidden sm:inline">Accès anticipé</span>

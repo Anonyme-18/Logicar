@@ -1,10 +1,10 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# Instructions de développement
+
+Ce projet est une application **Next.js 15 (App Router)** pour la gestion de devis, factures et suivi financier d'artisans.
+
+## Technologies
+
+- **Framework** : Next.js 15 (App Router)
+- **Langage** : TypeScript
+- **Style** : Tailwind CSS v4 + Radix UI
+- **Base de données** : Neon PostgreSQL (`DATABASE_URL`) / Better Auth

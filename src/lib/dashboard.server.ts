@@ -1,9 +1,7 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/integrations/supabase/types";
+import { query } from "@/lib/db";
 import { toCents, fromCents } from "./money";
 
 const PENDING = ["UNPAID", "PARTIALLY_PAID", "OVERDUE"];
-
 const MONTH_SHORT = [
   "janv.",
   "févr.",
@@ -18,49 +16,36 @@ const MONTH_SHORT = [
   "nov.",
   "déc.",
 ];
-
-export async function buildDashboard(
-  supabase: SupabaseClient<Database>,
-  userId: string,
-  from: string,
-  to: string,
-) {
-  const [{ data: profile }, { data: invoices, error }, { data: quotes }] = await Promise.all([
-    supabase.from("artisan_profiles").select("currency").eq("user_id", userId).maybeSingle(),
-    supabase
-      .from("invoices")
-      .select("total, status, issue_date, paid_at")
-      .gte("issue_date", from)
-      .lte("issue_date", to)
-      .order("issue_date"),
-    supabase
-      .from("quotes")
-      .select("total, status, issue_date")
-      .gte("issue_date", from)
-      .lte("issue_date", to),
+export async function buildDashboard(userId: string, from: string, to: string) {
+  const [profile, invoices, quotes] = await Promise.all([
+    query<{ currency: string }>("SELECT currency FROM artisan_profiles WHERE user_id = $1", [
+      userId,
+    ]),
+    query<{ total: string; status: string; issue_date: string }>(
+      "SELECT total, status, issue_date FROM invoices WHERE user_id = $1 AND issue_date BETWEEN $2 AND $3 ORDER BY issue_date",
+      [userId, from, to],
+    ),
+    query<{ total: string; status: string; issue_date: string }>(
+      "SELECT total, status, issue_date FROM quotes WHERE user_id = $1 AND issue_date BETWEEN $2 AND $3",
+      [userId, from, to],
+    ),
   ]);
-  if (error) throw new Error(error.message);
-
-  const rows = (invoices ?? []).filter((i) => i.status !== "CANCELLED");
-
+  const rows = invoices.filter((invoice) => invoice.status !== "CANCELLED");
   let billed = 0;
   let collected = 0;
   let pending = 0;
   const buckets = new Map<string, { billed: number; collected: number }>();
-
-  for (const inv of rows) {
-    const cents = toCents(Number(inv.total));
+  for (const invoice of rows) {
+    const cents = toCents(Number(invoice.total));
     billed += cents;
-    if (inv.status === "PAID") collected += cents;
-    if (PENDING.includes(inv.status)) pending += cents;
-
-    const key = inv.issue_date.slice(0, 7);
+    if (invoice.status === "PAID") collected += cents;
+    if (PENDING.includes(invoice.status)) pending += cents;
+    const key = invoice.issue_date.slice(0, 7);
     const bucket = buckets.get(key) ?? { billed: 0, collected: 0 };
     bucket.billed += cents;
-    if (inv.status === "PAID") bucket.collected += cents;
+    if (invoice.status === "PAID") bucket.collected += cents;
     buckets.set(key, bucket);
   }
-
   const series = [...buckets.entries()]
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, value]) => {
@@ -72,12 +57,11 @@ export async function buildDashboard(
         collected: fromCents(value.collected),
       };
     });
-
-  const quoteRows = quotes ?? [];
-  const acceptedQuotes = quoteRows.filter((q) => q.status === "ACCEPTED" || q.status === "CONVERTED");
-
+  const acceptedQuotes = quotes.filter(
+    (quote) => quote.status === "ACCEPTED" || quote.status === "CONVERTED",
+  );
   return {
-    currency: profile?.currency ?? "XOF",
+    currency: profile[0]?.currency ?? "XOF",
     period: { from, to },
     kpi: {
       billed: fromCents(billed),
@@ -87,16 +71,14 @@ export async function buildDashboard(
       collectionRate: billed > 0 ? Math.round((collected / billed) * 100) : 0,
     },
     quotes: {
-      total: quoteRows.length,
+      total: quotes.length,
       accepted: acceptedQuotes.length,
       pipeline: fromCents(
-        quoteRows
+        quotes
           .filter((q) => q.status === "SENT")
-          .reduce((acc, q) => acc + toCents(Number(q.total)), 0),
+          .reduce((sum, q) => sum + toCents(Number(q.total)), 0),
       ),
-      conversionRate: quoteRows.length
-        ? Math.round((acceptedQuotes.length / quoteRows.length) * 100)
-        : 0,
+      conversionRate: quotes.length ? Math.round((acceptedQuotes.length / quotes.length) * 100) : 0,
     },
     series,
   };

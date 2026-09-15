@@ -14,8 +14,14 @@ export type ClientInput = z.infer<typeof clientInput>;
 
 export const quoteItemInput = z.object({
   description: z.string().trim().min(1, "La désignation est obligatoire").max(300),
-  quantity: z.number().positive("La quantité doit être supérieure à zéro"),
-  unit_price: z.number().min(0, "Le prix unitaire ne peut pas être négatif"),
+  quantity: z
+    .number()
+    .positive("La quantité doit être supérieure à zéro")
+    .max(999_999.999, "La quantité est trop élevée"),
+  unit_price: z
+    .number()
+    .min(0, "Le prix unitaire ne peut pas être négatif")
+    .max(99_999_999.99, "Le prix unitaire est trop élevé"),
 });
 
 export const quoteInput = z.object({
@@ -47,7 +53,9 @@ export const profileInput = z.object({
 });
 export type ProfileInput = z.infer<typeof profileInput>;
 
-export const periodInput = z.object({
-  from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-});
+export const periodInput = z
+  .object({
+    from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    to: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  })
+  .refine(({ from, to }) => from <= to, "La période est invalide");

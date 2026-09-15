@@ -1,49 +1,44 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "@/integrations/supabase/types";
+import { query } from "@/lib/db";
 import { lineTotalCents, fromCents, sumCents } from "./money";
 import { QUOTE_STATUS, type QuoteStatus } from "./status";
 
-export type DbClient = SupabaseClient<Database>;
-
 export type RawItem = { description: string; quantity: number; unit_price: number };
-
-/** Statuts pour lesquels le devis n'est plus modifiable. */
+export type Profile = {
+  business_name?: string | null;
+  full_name?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  address?: string | null;
+  city?: string | null;
+  country?: string | null;
+  tax_identifier?: string | null;
+  logo_url?: string | null;
+  currency?: string | null;
+  quote_terms?: string | null;
+};
 export const LOCKED_QUOTE_STATUSES: QuoteStatus[] = ["ACCEPTED", "CONVERTED"];
-
-export function isQuoteLocked(status: string): boolean {
+export function isQuoteLocked(status: string) {
   return LOCKED_QUOTE_STATUSES.includes(status as QuoteStatus);
 }
-
-/** Recalcul serveur : seule source de vérité pour les montants. */
 export function computeTotals(items: RawItem[]) {
-  const lines = items.map((item, index) => {
+  const lines = items.map((item, position) => {
     const cents = lineTotalCents(item.quantity, item.unit_price);
     return {
       description: item.description.trim(),
       quantity: Number(item.quantity),
       unit_price: Number(item.unit_price),
       line_total: fromCents(cents),
-      position: index,
+      position,
       _cents: cents,
     };
   });
-  const subtotal = fromCents(sumCents(lines.map((l) => l._cents)));
-  return {
-    lines: lines.map(({ _cents, ...rest }) => rest),
-    subtotal,
-    total: subtotal,
-  };
+  const subtotal = fromCents(sumCents(lines.map((line) => line._cents)));
+  return { lines: lines.map(({ _cents, ...rest }) => rest), subtotal, total: subtotal };
 }
-
-export async function loadProfile(supabase: DbClient, userId: string) {
-  const { data } = await supabase
-    .from("artisan_profiles")
-    .select("*")
-    .eq("user_id", userId)
-    .maybeSingle();
-  return data;
+export async function loadProfile(userId: string): Promise<Profile | null> {
+  const rows = await query<Profile>("SELECT * FROM artisan_profiles WHERE user_id = $1", [userId]);
+  return rows[0] ?? null;
 }
-
-export function quoteStatusLabel(status: string): string {
+export function quoteStatusLabel(status: string) {
   return QUOTE_STATUS[status as QuoteStatus]?.label ?? status;
 }
