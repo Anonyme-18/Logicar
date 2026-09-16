@@ -1,63 +1,63 @@
 # Logicar
 
-Application web de gestion de devis, factures et suivi financier pour les artisans indépendants.
+A web application for managing quotes, invoices, and financial tracking for independent tradespeople.
 
-Logicar permet de créer un devis professionnel, de le générer en PDF, puis de le convertir en facture sans ressaisie. Le tableau de bord donne une vision claire des montants facturés, encaissés et en attente.
+Logicar lets users create professional quotes, generate PDF documents, and convert accepted quotes into invoices without re-entering any information. The dashboard provides a clear overview of billed, collected, and outstanding amounts.
 
-## Fonctionnalités
+## Features
 
-- inscription et connexion sécurisées par email et mot de passe ;
-- création de devis avec plusieurs prestations ;
-- calcul des montants côté serveur ;
-- génération de PDF ;
-- statuts de devis : brouillon, envoyé, accepté, refusé ;
-- conversion atomique d’un devis accepté en facture ;
-- verrouillage du contenu des factures ;
-- suivi des paiements ;
-- tableau de bord financier avec filtres par période ;
-- interface responsive desktop et mobile ;
-- isolation stricte des données entre utilisateurs.
+- Secure email and password authentication;
+- Quote creation with multiple service items;
+- Server-side amount calculations;
+- PDF document generation;
+- Quote statuses: draft, sent, accepted, and rejected;
+- Atomic conversion of accepted quotes into invoices;
+- Locked invoice content after conversion;
+- Payment status tracking;
+- Financial dashboard with date-range filters;
+- Responsive desktop and mobile interface;
+- Strict data isolation between users.
 
-## Stack technique
+## Tech Stack
 
-- Next.js 16 avec App Router et Server Actions ;
-- TypeScript ;
-- Tailwind CSS v4 et Radix UI ;
-- Neon PostgreSQL ;
-- Better Auth pour l’authentification et les sessions ;
-- `pg` pour les accès PostgreSQL côté serveur ;
-- Zod pour la validation des entrées ;
-- pdf-lib pour la génération des documents ;
-- GitHub Actions pour l’intégration continue ;
-- Vercel pour le déploiement.
+- Next.js 16 with App Router and Server Actions;
+- TypeScript;
+- Tailwind CSS v4 and Radix UI;
+- Neon PostgreSQL;
+- Better Auth for authentication and sessions;
+- `pg` for server-side PostgreSQL access;
+- Zod for input validation;
+- pdf-lib for document generation;
+- GitHub Actions for continuous integration;
+- Vercel for deployment.
 
 ## Architecture
 
 ```text
 src/
-├── app/                 # Routes Next.js et pages de l’application
-├── components/          # Composants d’interface réutilisables
+├── app/                 # Next.js routes and application pages
+├── components/          # Reusable interface components
 ├── lib/
-│   ├── auth.ts          # Configuration Better Auth
-│   ├── db.ts            # Pool PostgreSQL Neon
-│   ├── *.actions.ts     # Server Actions métier
-│   ├── *.server.ts      # Logique serveur et calculs
-│   └── pdf.server.ts    # Génération des PDF
-└── styles.css           # Tokens et styles globaux
+│   ├── auth.ts          # Better Auth configuration
+│   ├── db.ts            # Neon PostgreSQL connection pool
+│   ├── *.actions.ts     # Business Server Actions
+│   ├── *.server.ts      # Server-side logic and calculations
+│   └── pdf.server.ts    # PDF generation
+└── styles.css           # Global styles and design tokens
 
 db/
-└── migrations/          # Schéma PostgreSQL et contraintes métier
+└── migrations/          # PostgreSQL schema and business constraints
 ```
 
-Les données métier sont toujours interrogées côté serveur. Les actions vérifient la session courante et filtrent chaque ressource par l’utilisateur authentifié.
+Business data is always accessed on the server. Server Actions validate the current session and scope every resource to the authenticated user.
 
-## Prérequis
+## Requirements
 
-- Node.js 20.9 ou supérieur ;
-- npm ;
-- un projet PostgreSQL Neon.
+- Node.js 20.9 or later;
+- npm;
+- A Neon PostgreSQL project.
 
-## Installation locale
+## Local Setup
 
 ```bash
 git clone https://github.com/Anonyme-18/Logicar.git
@@ -65,84 +65,84 @@ cd Logicar
 npm install
 ```
 
-Copier le fichier d’exemple :
+Create your local environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-Puis renseigner les variables suivantes :
+Then configure the following variables:
 
 ```env
 DATABASE_URL="postgresql://user:password@your-neon-host/neondb?sslmode=require"
-BETTER_AUTH_SECRET="une-valeur-secrete-longue-et-aleatoire"
+BETTER_AUTH_SECRET="a-long-random-secret-value"
 BETTER_AUTH_URL="http://localhost:3000"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
-Générer le schéma initial dans Neon depuis l’éditeur SQL ou avec `psql` :
+Initialize the database from the Neon SQL Editor or with `psql`:
 
 ```bash
 psql "$DATABASE_URL" -f db/migrations/0000_neon_initial.sql
 ```
 
-Lancer l’application :
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-L’application est ensuite disponible sur [http://localhost:3000](http://localhost:3000).
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
-## Scripts disponibles
+## Available Scripts
 
 ```bash
-npm run dev        # serveur de développement
-npm run build      # build de production
-npm run start      # serveur de production local
-npm run lint       # analyse ESLint
-npm run typecheck  # vérification TypeScript
-npm run format     # formatage Prettier
-npm audit          # audit des dépendances
+npm run dev        # Start the development server
+npm run build      # Create a production build
+npm run start      # Start the production server locally
+npm run lint       # Run ESLint
+npm run typecheck  # Run the TypeScript compiler
+npm run format     # Format files with Prettier
+npm audit          # Audit dependencies
 ```
 
-La CI GitHub exécute automatiquement le lint, le typage, le build et l’audit des dépendances à chaque push et pull request.
+GitHub Actions automatically runs linting, type checking, the production build, and the dependency audit on every push and pull request.
 
-## Déploiement sur Vercel
+## Deploying to Vercel
 
-1. Importer le dépôt GitHub dans Vercel.
-2. Sélectionner le framework **Next.js**.
-3. Ajouter les variables d’environnement de production :
+1. Import the GitHub repository into Vercel.
+2. Select **Next.js** as the framework.
+3. Add the following production environment variables:
 
 ```env
 DATABASE_URL=...
 BETTER_AUTH_SECRET=...
-BETTER_AUTH_URL=https://votre-domaine.vercel.app
-NEXT_PUBLIC_APP_URL=https://votre-domaine.vercel.app
+BETTER_AUTH_URL=https://your-domain.vercel.app
+NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app
 ```
 
-4. Appliquer la migration SQL sur Neon avant le premier usage.
-5. Déployer et vérifier le parcours inscription → devis → facture.
+4. Apply the SQL migration to Neon before the first production use.
+5. Deploy and verify the signup → quote → invoice workflow.
 
-Ne jamais publier `.env`, `DATABASE_URL` ou `BETTER_AUTH_SECRET`. Le fichier `.env.example` contient uniquement des exemples non sensibles.
+Never publish `.env`, `DATABASE_URL`, or `BETTER_AUTH_SECRET`. The `.env.example` file contains examples only and no sensitive values.
 
-## Sécurité
+## Security
 
-- authentification et sessions gérées côté serveur ;
-- secrets absents du bundle client ;
-- validation Zod des données entrantes ;
-- requêtes PostgreSQL paramétrées ;
-- contrôle d’appartenance utilisateur sur les ressources ;
-- contraintes SQL sur les montants et les relations ;
-- factures verrouillées après conversion ;
-- historique Git purgé des fichiers d’environnement.
+- Authentication and sessions are handled server-side;
+- Secrets are never exposed in the client bundle;
+- Incoming data is validated with Zod;
+- PostgreSQL queries use parameters;
+- User ownership is checked for every business resource;
+- SQL constraints protect amounts and relationships;
+- Invoice content is locked after conversion;
+- Git history has been purged of environment files.
 
-Pour signaler une vulnérabilité, consulter [SECURITY.md](SECURITY.md) plutôt que d’ouvrir une issue publique.
+To report a vulnerability, read [SECURITY.md](SECURITY.md) instead of opening a public issue.
 
-## État du projet
+## Project Status
 
-Le projet est fonctionnel sur son périmètre MVP. La base de données de production doit être initialisée sur Neon avant le déploiement final.
+The project is functional within its current MVP scope. The production database must be initialized on Neon before the final deployment.
 
-## Licence
+## License
 
-Projet personnel à vocation de démonstration professionnelle. La licence pourra être précisée avant une distribution publique.
+Personal project intended as a professional portfolio demonstration. A formal license may be added before broader distribution.
